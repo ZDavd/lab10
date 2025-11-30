@@ -17,15 +17,13 @@ public final class DrawNumberImpl implements DrawNumber {
     /**
      * Constructor.
      *
-     * @param min The minimum allowed number
-     * @param max The maximum allowed number
-     * @param attempts The maximum attempts count
+     * @param config the configuration
      * @throws IllegalStateException if the configuration is not consistent
      */
-    public DrawNumberImpl(final int min, final int max, final int attempts) {
-        this.min = min;
-        this.max = max;
-        this.attempts = attempts;
+    public DrawNumberImpl(final Configuration config) {
+        this.min = config.getMin();
+        this.max = config.getMax();
+        this.attempts = config.getAttempts();
         this.reset();
     }
 

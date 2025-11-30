@@ -10,22 +10,20 @@ import java.util.List;
  * Application entry point for DrawNumber game.
  */
 public final class DrawNumberApp implements DrawNumberViewObserver {
-    private static final int MIN = 0;
-    private static final int MAX = 100;
-    private static final int ATTEMPTS = 10;
 
     private final DrawNumber model;
     private final List<DrawNumberView> views;
 
     /**
      * Constructor.
-     *
+     * 
      * @param configFile
      *            the configuration file path
+     * 
      * @param views
      *            the views to attach
      */
-    public DrawNumberApp(final DrawNumberView... views) {
+    public DrawNumberApp(final String configFile, final DrawNumberView... views) {
         /*
          * Side-effect proof
          */
@@ -34,7 +32,9 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
             view.setObserver(this);
             view.start();
         }
-        this.model = new DrawNumberImpl(MIN, MAX, ATTEMPTS);
+
+        final Configuration config = ConfigurationLoader.load(configFile);
+        this.model = new DrawNumberImpl(config);
     }
 
     @Override
@@ -79,7 +79,13 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
      * @throws FileNotFoundException if the configuration file cannot be fetched
      */
     public static void main(final String... args) throws FileNotFoundException {
-        new DrawNumberApp(new DrawNumberViewImpl());
+        new DrawNumberApp(
+            "config.yml", 
+            new DrawNumberViewImpl(),
+            new DrawNumberViewImpl(),
+            new PrintStreamView(System.out),
+            new PrintStreamView("output.log")
+        );
     }
 
 }
